@@ -1,0 +1,18 @@
+node:
+  id: test-id
+  cluster: test-cluster
+
+dynamic_resources:
+  cds_config:
+    path: /etc/envoy/cds.yaml
+  lds_config:
+    path: /etc/envoy/lds.yaml
+
+admin:
+  access_log_path: /tmp/admin_access.log
+  address:
+    socket_address:
+      protocol: TCP
+      address: 127.0.0.1
+      port_value: 9901
+
