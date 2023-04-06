@@ -1,3 +1,7 @@
+node:
+  id: test-id
+  cluster: test-cluster
+
 admin:
   access_log_path: /tmp/admin_access.log
   address:
@@ -5,6 +9,7 @@ admin:
       protocol: TCP
       address: 127.0.0.1
       port_value: 9901
+
 static_resources:
   listeners:  # LDS
   - name: listener_0
@@ -34,16 +39,8 @@ static_resources:
   clusters:
   - name: service_google
     connect_timeout: 0.25s
-    type: LOGICAL_DNS
-    # Comment out the following line to test on v6 networks
-    dns_lookup_family: V4_ONLY
-    lb_policy: ROUND_ROBIN
-    load_assignment:
-      cluster_name: some_service
-      endpoints:
-      - lb_endpoints:
-        - endpoint:
-            address:
-              socket_address:
-                address: 127.0.0.1
-                port_value: 80
+    type: EDS
+    eds_cluster_config:
+      service_name: localservices  # 可选，代替集群的名称，提供给 EDS 服务
+      eds_config:  # 集群的 EDS 更新源配置
+        path: '/etc/envoy/eds.yaml'
